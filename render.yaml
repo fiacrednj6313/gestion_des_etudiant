@@ -3,11 +3,12 @@ services:
   - type: web
     name: gestion-etudiant-api
     runtime: docker
-    region: frankfurt
-    plan: starter
+    region: oregon
+    plan: free
     repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
     rootDir: backend
     dockerCommand: npm start
+    autoDeployTrigger: commit
     envVars:
       - key: PORT
         value: 3000
@@ -35,10 +36,11 @@ services:
   - type: web
     name: gestion-etudiant-client
     runtime: docker
-    region: frankfurt
-    plan: starter
+    region: oregon
+    plan: free
     repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
     rootDir: front-react
+    autoDeployTrigger: commit
     envVars:
       - key: VITE_API_URL
         fromService:
@@ -52,12 +54,11 @@ services:
       - gestion-etudiant.onrender.com
 
 databases:
-  # Base de données MongoDB sur MongoDB Atlas
-  # Alternative: utiliser Render Postgres si vous migrez de MongoDB
+  # Base de données PostgreSQL (gratuite)
   - name: gestion-etudiant-db
     databaseName: gestion_etudiant
-    plan: starter
-    region: frankfurt
+    plan: free
+    region: oregon
     ipAllowList:
       - source: 0.0.0.0/0
         description: allow all connections

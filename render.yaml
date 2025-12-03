@@ -7,7 +7,7 @@ services:
     plan: free
     repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
     rootDir: backend
-    dockerCommand: npm start
+    dockerCommand: bun start
     autoDeployTrigger: commit
     envVars:
       - key: PORT

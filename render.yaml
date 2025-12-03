@@ -40,11 +40,11 @@ services:
     rootDir: front-react
     autoDeployTrigger: commit
     envVars:
-      - key: VITE_API_URL
+      - key: API_URL
         fromService:
           name: gestion-etudiant-api
           type: web
-          property: hostport
+          property: url
     healthCheckPath: /
     domains:
       - gestion-etudiant.onrender.com

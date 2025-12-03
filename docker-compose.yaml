@@ -1,0 +1,40 @@
+services:
+  server:
+    container_name: backend-gestion-etudiant
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - ORIGIN=*
+      - CREDENTIALS=true
+      - METHODS=GET,HEAD,PUT,PATCH,POST,DELETE
+      - DATABASE_URL=mongodb://mongo:27017/gestion_etudiant
+      - JWT_SECRETS=ma_cle_secrete
+      - JWT_EXPIRES_IN=1d
+    depends_on:
+      - mongo # Attendre que Mongo démarre avant de lancer l'API
+    restart: always # Redémarre automatiquement en cas de crash
+  mongo:
+    container_name: db-gestion-etudiant
+    image: mongo:6 # Toujours fixer une version majeure (éviter "latest" en prod)
+    ports:
+      - "27017:27017" # Optionnel : pour accéder à la DB depuis votre PC (ex: via MongoDB Compass)
+    volumes:
+      - mongo_data:/data/db # CRUCIAL : Pour ne pas perdre vos données !
+    restart: always
+  client:
+    container_name: frontend-gestion-etudiant
+    build:
+      context: ./front-react # Mettez "." si vous êtes déjà dedans
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Accessible sur http://localhost
+    depends_on:
+      - server # On attend que le back soit prêt (optionnel mais propre)
+    restart: always
+
+# DÉFINITION DES VOLUMES
+volumes:
+  mongo_data:

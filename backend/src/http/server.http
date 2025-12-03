@@ -1,0 +1,12 @@
+###
+GET http://localhost:5000/etudiants
+
+###
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+  "nom": "admin",
+  "email": "admin@example.com",
+  "mot_de_passe": "admin123"
+}

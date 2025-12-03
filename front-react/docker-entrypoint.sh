@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Substituer la variable API_URL dans le fichier de config nginx
-# Si API_URL n'est pas définie, elle sera vide dans la config
-envsubst '${API_URL}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+# Substituer les variables API_HOST et API_PORT dans le fichier de config nginx
+# Si pas définies, elles seront vides et nginx utilisera la valeur par défaut
+envsubst '${API_HOST},${API_PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
 # Lancer nginx
 exec "$@"

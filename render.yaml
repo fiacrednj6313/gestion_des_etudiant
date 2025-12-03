@@ -40,11 +40,16 @@ services:
     rootDir: front-react
     autoDeployTrigger: commit
     envVars:
-      - key: API_URL
+      - key: API_HOST
         fromService:
           name: gestion-etudiant-api
           type: web
-          property: url
+          property: host
+      - key: API_PORT
+        fromService:
+          name: gestion-etudiant-api
+          type: web
+          property: port
     healthCheckPath: /
     domains:
       - gestion-etudiant.onrender.com

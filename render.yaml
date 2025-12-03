@@ -1,0 +1,70 @@
+services:
+  # Service Backend - API Node.js/Express
+  - type: web
+    name: gestion-etudiant-api
+    runtime: docker
+    region: frankfurt
+    plan: starter
+    repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: ORIGIN
+        value: https://gestion-etudiant-client.onrender.com
+      - key: CREDENTIALS
+        value: "true"
+      - key: METHODS
+        value: GET,HEAD,PUT,PATCH,POST,DELETE
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gestion-etudiant-db
+          property: connectionString
+      - key: JWT_SECRETS
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+    healthCheckPath: /
+    maxShutdownDelaySeconds: 30
+    autoDeploy: true
+
+  # Service Frontend - React/Vite
+  - type: web
+    name: gestion-etudiant-client
+    runtime: docker
+    region: frankfurt
+    plan: starter
+    repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
+    rootDir: front-react
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    buildCommand: npm install && npm run build
+    startCommand: nginx -g "daemon off;"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: gestion-etudiant-api
+          type: web
+          property: hostport
+    healthCheckPath: /
+    maxShutdownDelaySeconds: 30
+    autoDeploy: true
+    domains:
+      - gestion-etudiant.onrender.com
+
+databases:
+  # Base de données MongoDB sur MongoDB Atlas
+  # Alternative: utiliser Render Postgres si vous migrez de MongoDB
+  - name: gestion-etudiant-db
+    databaseName: gestion_etudiant
+    plan: starter
+    region: frankfurt
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: allow all connections

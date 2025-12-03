@@ -7,10 +7,7 @@ services:
     plan: starter
     repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
     rootDir: backend
-    dockerfilePath: ./Dockerfile
-    dockerContext: ./
-    buildCommand: npm install
-    startCommand: npm start
+    dockerCommand: npm start
     envVars:
       - key: PORT
         value: 3000
@@ -42,10 +39,6 @@ services:
     plan: starter
     repo: https://github.com/fiacrednj6313/gestion_des_etudiant.git
     rootDir: front-react
-    dockerfilePath: ./Dockerfile
-    dockerContext: ./
-    buildCommand: npm install && npm run build
-    startCommand: nginx -g "daemon off;"
     envVars:
       - key: VITE_API_URL
         fromService:
